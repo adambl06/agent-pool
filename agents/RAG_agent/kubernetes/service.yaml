@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: rag-agent
+  namespace: agentic
+spec:
+  selector:
+    app: rag-agent
+  ports:
+    - name: http
+      port: 8091
+      targetPort: 8091
+  type: ClusterIP

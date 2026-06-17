@@ -1,0 +1,28 @@
+.venv/
+
+# Python
+__pycache__/
+
+
+# Virtual environments
+
+
+# Logs
+*.log
+logs/
+
+# Vector store (local FAISS / Qdrant snapshots)
+vector_db/
+
+# Documents (may contain sensitive internal data)
+documents/
+
+# IDE
+.vscode/
+
+# Docker
+*.tar
+
+# Kubernetes secrets (never commit these)
+*secret*.yaml
+*secret*.yml

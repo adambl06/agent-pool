@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rag-agent-config
+  namespace: agentic
+data:
+  llmEndpoint: "http://ollama.default.svc.cluster.local:11434"
+  qdrantUrl: "http://qdrant-vector-db.agentic.svc.cluster.local:6333"
+  llmModelName: "qwen3:8b"       # exact name as shown in Ollama /api/tags
+  llmDisplayName: "rag-agent-cnip"        # name shown in OpenWebUI
+  llmTimeoutSeconds: "600"         # increase for slower models

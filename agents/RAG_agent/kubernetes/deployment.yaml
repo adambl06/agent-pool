@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rag-agent
+  namespace: agentic
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rag-agent
+  template:
+    metadata:
+      labels:
+        app: rag-agent
+    spec:
+      containers:
+        - name: rag-agent
+          image: your-registry/rag-agent:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8091
+          env:
+            - name: LLM_TYPE
+              value: qwen3
+            - name: LLM_PROVIDER
+              value: ollama
+            - name: LLM_MODEL_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: rag-agent-config
+                  key: llmModelName
+            - name: LLM_DISPLAY_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: rag-agent-config
+                  key: llmDisplayName
+            - name: LLM_ENDPOINT
+              valueFrom:
+                configMapKeyRef:
+                  name: rag-agent-config
+                  key: llmEndpoint
+            - name: LLM_TIMEOUT_SECONDS
+              valueFrom:
+                configMapKeyRef:
+                  name: rag-agent-config
+                  key: llmTimeoutSeconds
+            - name: QDRANT_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: rag-agent-config
+                  key: qdrantUrl
+            - name: QDRANT_COLLECTION
+              value: rag_documents
+            - name: DOCUMENTS_DIR
+              value: /data/rag_test/documents
+            - name: CHUNK_SIZE
+              value: "1000"
+            - name: CHUNK_OVERLAP
+              value: "200"
+            - name: INGEST_ON_STARTUP
+              value: "true"
+            - name: PORT
+              value: "8091"
+          volumeMounts:
+            - name: docs
+              mountPath: /data/rag_test/documents
+              readOnly: true
+      volumes:
+        - name: docs
+          hostPath:
+            path: /data/rag_test/documents
+            type: Directory
+
